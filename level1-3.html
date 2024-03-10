@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #calculator {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+      max-width: 300px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #ffa2bd;
+    }
+
+    #display {
+      grid-column: span 4;
+      margin-bottom: 10px;
+      padding: 10px;
+      text-align: right;
+      font-size: 1.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 1.2em;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+    }
+
+    button.operator {
+      background-color: #f53e75;
+      color: #fff;
+    }
+
+    button.double {
+      grid-column: span 2;
+    }
+  </style>
+  <title>Basic Calculator</title>
+</head>
+<body>
+
+<div id="calculator">
+  <div id="display">0</div>
+  <button>7</button>
+  <button>8</button>
+  <button>9</button>
+  <button class="operator">/</button>
+  <button>4</button>
+  <button>5</button>
+  <button>6</button>
+  <button class="operator">*</button>
+  <button>1</button>
+  <button>2</button>
+  <button>3</button>
+  <button class="operator">-</button>
+  <button class="double">0</button>
+  <button>.</button>
+  <button class="operator double">+</button>
+  <button class="double" onclick="clearDisplay()">C</button>
+  <button class="double" onclick="calculate()">=</button>
+</div>
+
+<script>
+  let display = document.getElementById('display');
+  let currentInput = '';
+
+  document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', function() {
+      handleButtonClick(button.textContent);
+      updateDisplay();
+    });
+  });
+
+  function handleButtonClick(value) {
+    if (!isNaN(parseInt(value)) || value === '.') {
+      currentInput += value;
+    } else if (value === 'C') {
+      clearDisplay();
+    } else if (value === '=') {
+      calculate();
+    } else {
+      currentInput += ' ' + value + ' ';
+    }
+  }
+
+  function updateDisplay() {
+    display.textContent = currentInput === '' ? '0' : currentInput;
+  }
+
+  function clearDisplay() {
+    currentInput = '';
+    updateDisplay();
+  }
+
+  function calculate() {
+    try {
+      currentInput = eval(currentInput);
+    } catch (error) {
+      currentInput = 'Error';
+    }
+    updateDisplay();
+  }
+</script>
+
+</body>
+</html>
